@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.menu-search-wrap {
+  position: relative;
+  padding-top: 6px;
+}
+
+.logo {
+  text-align: left;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, .2);
+}
+
+#container {
+  margin: 100px;
+}
+
