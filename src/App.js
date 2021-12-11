@@ -4,6 +4,7 @@ import './App.css';
 import { Button, Card } from 'antd';
 import 'antd/dist/antd.css';
 import { Upload } from 'antd';
+import { Row, Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import ExcelReader from './ExcelReader';
@@ -40,10 +41,10 @@ function App() {
   var mock1 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var mock2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var indexs = ["0", "1", "3", "4"];
-  var numbers = ["234", "123", "234", "3488", "234", "123", "234", "123", "234", "123", "234", "3488", "234", "123", "234", "123"];
+  var numbers = ["234", "123", "234", "348", "234", "123", "234", "123", "234", "123", "234", "388", "234", "123", "234", "123"];
   var icons = [["0", "1"], ["1"], ["3", ], [], ["4", "1"], [], ["0"], [], ["3"], [], ["4", "1"], ["1"], [], [], [], []];
 
-  createTable(numbers);
+  // createTable(numbers);
 
   function createTable(tableNumbers) {
       var table = document.createElement('table');
@@ -89,7 +90,8 @@ function App() {
 
           iconsList.forEach(function(icon) {
               var img = document.createElement('img');
-              img.src = `./static/${icon}.png`;
+              img.src = require(`./static/${icon}.png`).default;
+              // img.src = `./static/${icon}.png`;
               cell.appendChild(img);
               cell.appendChild(document.createElement('br'));
           });
@@ -110,21 +112,148 @@ function App() {
         </div>
       </div>
       <Card id="container">
-        <Upload
-          listType="picture-card"
-          showUploadList={true}
-          onPreview={handlePreview}
-          // beforeUpload={beforeUpload}
-          // onChange={this.handleChange}
-        >
-          {uploadButton}
-        </Upload>
+        <Row>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+                // beforeUpload={beforeUpload}
+                // onChange={this.handleChange}
+              >
+                {uploadButton}
+              </Upload>
+              Светофоры
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Обрывные места
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Места пересечения с ЛЭП
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Опробование тормозов
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Устройства контроля схода подвижного состава (УКСПС)
+          </Col>
+          <Col span={2}>
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Комплексы технических средств мониторинга (КТСМ)
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Оси станций
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Граничные стрелки станций
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Переезды
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Мосты
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Профиль пути
+          </Col>
+          <Col span={2}>
+            
+             <Upload
+                listType="picture-card"
+                showUploadList={true}
+                onPreview={handlePreview}
+              >
+                {uploadButton}
+              </Upload>
+              Ведомость допустимых скоростей
+          </Col>
+        </Row>
+        
       </Card>
       <ExcelReader/>
       <div id="cartographer">
 
       </div>
-      <Button> Draw </Button>
+      <Button onClick={createTable}> Draw </Button>
     </div>
   );
 }
