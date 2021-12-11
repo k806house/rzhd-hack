@@ -5,66 +5,122 @@ import { SheetJSFT } from './types';
 
 import { Row, Col } from 'antd';
 import { file } from '@babel/types';
+
  
-class ExcelReader extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: {},
-      data: [],
-      cols: []
-    }
-    this.handleFile = this.handleFile.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+// class ExcelReader extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       file: {},
+//       data: [],
+//       cols: []
+//     }
+//     this.handleFile = this.handleFile.bind(this);
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+ 
+//   handleChange(e) {
+//     const files = e.target.files;
+//     if (files && files[0]) this.setState({ file: files[0] });
+//   };
+ 
+//   handleFile() {
+//     /* Boilerplate to set up FileReader */
+//     const reader = new FileReader();
+//     const rABS = !!reader.readAsBinaryString;
+ 
+//     reader.onload = (e) => {
+//       /* Parse data */
+//       const bstr = e.target.result;
+//       const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array', bookVBA : true });
+//       /* Get first worksheet */
+//       const wsname = wb.SheetNames[0];
+//       const ws = wb.Sheets[wsname];
+//       /* Convert array of arrays */
+//       const data = XLSX.utils.sheet_to_json(ws);
+//       /* Update state */
+//       this.setState({ data: data, cols: make_cols(ws['!ref']) }, () => {
+//         console.log(JSON.stringify(this.state.data, null, 2));
+//       });
+ 
+//     };
+ 
+//     if (rABS) {
+//       reader.readAsBinaryString(this.state.file);
+//     } else {
+//       reader.readAsArrayBuffer(this.state.file);
+//     };
+//   }
+ 
+//   render() {
+//     return (
+//       <div>
+//         <label htmlFor="file">Upload an excel to Process Triggers</label>
+//         <br />
+//         <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+//         <br />
+//         <input type='submit' 
+//           value="Process Triggers"
+//           onClick={this.handleFile} />
+//           </div>
+      
+//     )
+//   }
+// }
+
+function ExcelReader() {
+  const [data, setData] = React.useState([]);
+  const [cols, setCols] = React.useState([]);
+
+  const [fileCounter, setFileCounter] = React.useState(1);
+  const [isSubmitVisible, isSubmitVisibleSet] = React.useState(true);
+
+  const handleFile = (file) => {
+    // const reader = new FileReader();
+    // reader.onload = (e) => {
+    //   /* Parse data */
+    //   const ab = e.target.result;
+    //   const wb = XLSX.read(ab, {type:'array'});
+    //   /* Get first worksheet */
+    //   const wsname = wb.SheetNames[0];
+    //   const ws = wb.Sheets[wsname];
+    //   /* Convert array of arrays */
+    //   const data = XLSX.utils.sheet_to_json(ws, {header:1});
+    //   /* Update state */
+    //   setData(data);
+    //   setCols(make_cols(ws['!ref']))
+    // };
+    // reader.readAsArrayBuffer(file);
+    console.log("kek");
   }
 
-  
- 
-  handleChange(e) {
-    const files = e.target.files;
-    console.log("files", files);
-    if (files && files[0]) this.setState({ file: files[0] });
+  const addfile = () => {
+    setFileCounter(fileCounter + 1);
+    if (fileCounter == 2) {
+      isSubmitVisibleSet(false);
+    }
+    console.log(fileCounter);
   };
- 
-  handleFile() {
-    /* Boilerplate to set up FileReader */
-    const reader = new FileReader();
-    const rABS = !!reader.readAsBinaryString;
- 
-    reader.onload = (e) => {
-      /* Parse data */
-      const bstr = e.target.result;
-      const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array', bookVBA : true });
-      /* Get first worksheet */
-      const wsname = wb.SheetNames[0];
-      const ws = wb.Sheets[wsname];
-      /* Convert array of arrays */
-      const data = XLSX.utils.sheet_to_json(ws);
-      /* Update state */
-      this.setState({ data: data, cols: make_cols(ws['!ref']) }, () => {
-        console.log(JSON.stringify(this.state.data, null, 2));
-      });
- 
-    };
- 
-    if (rABS) {
-      reader.readAsBinaryString(this.state.file);
-    } else {
-      reader.readAsArrayBuffer(this.state.file);
-    };
-  }
- 
-  render() {
-    return (
+
+  const exportFile = () => {
+    /* convert state to workbook */
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+    /* generate XLSX file and send to client */
+    XLSX.writeFile(wb, "sheetjs.xlsx")
+  };
+
+  return (
       <div>
         <Row>
           <Col span={2}>
               Светофоры
-              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={addfile} />
               <br />
               <br />
               Обрывные места
-              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={addfile} />
           </Col>
           {/* <Col span={2}>
               Обрывные места
@@ -102,15 +158,87 @@ class ExcelReader extends Component {
         </Row>
         {/* <label htmlFor="file">Upload an excel to Process Triggers</label>
         <br /> */}
-        <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+        <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={handleFile} />
         <br />
         <input type='submit' 
+          disabled={isSubmitVisible}
           value="Process Triggers"
-          onClick={this.handleFile} />
+          onClick={handleFile} />
         </div>
       
     )
-  }
+
+  // return (
+  // <DragDropFile handleFile={handleFile}>
+  //   <div className="row"><div className="col-xs-12">
+  //     <DataInput handleFile={handleFile} />
+  //   </div></div>
+  //   <div className="row"><div className="col-xs-12">
+  //     <button disabled={!data.length} className="btn btn-success" onClick={exportFile}>Export</button>
+  //   </div></div>
+  //   <div className="row"><div className="col-xs-12">
+  //     <OutTable data={data} cols={cols} />
+  //   </div></div>
+  // </DragDropFile>
+  // );
 }
  
 export default ExcelReader;
+
+function DragDropFile({ handleFile, children }) {
+  const suppress = (e) => { e.stopPropagation(); e.preventDefault(); };
+  const handleDrop = (e) => { e.stopPropagation(); e.preventDefault();
+    const files = e.dataTransfer.files;
+    if(files && files[0]) handleFile(files[0]);
+  };
+
+  return (
+    <div
+      onDrop={handleDrop}
+      onDragEnter={suppress}
+      onDragOver={suppress}
+    >
+    {children}
+    </div>
+  );
+}
+
+function DataInput({ handleFile }) {
+  const handleChange = (e) => {
+    const files = e.target.files;
+    if(files && files[0]) handleFile(files[0]);
+  };
+
+  return (
+    <form className="form-inline">
+      <div className="form-group">
+        <label htmlFor="file">Drag or choose a spreadsheet file</label>
+        <br />
+        <input
+          type="file"
+          className="form-control"
+          id="file"
+          accept={SheetJSFT}
+          onChange={handleChange}
+        />
+      </div>
+    </form>
+  )
+}
+
+function OutTable({ data, cols }) {
+  return (
+    <div className="table-responsive">
+      <table className="table table-striped">
+        <thead>
+          <tr>{cols.map((c) => <th key={c.key}>{c.name}</th>)}</tr>
+        </thead>
+        <tbody>
+          {data.map((r,i) => <tr key={i}>
+            {cols.map(c => <td key={c.key}>{ r[c.key] }</td>)}
+          </tr>)}
+        </tbody>
+      </table>
+    </div>
+  );
+}
