@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import XLSX from 'xlsx';
 import { make_cols } from './MakeColumns';
 import { SheetJSFT } from './types';
+
+import { Row, Col } from 'antd';
+import { file } from '@babel/types';
  
 class ExcelReader extends Component {
   constructor(props) {
@@ -14,9 +17,12 @@ class ExcelReader extends Component {
     this.handleFile = this.handleFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+
+  
  
   handleChange(e) {
     const files = e.target.files;
+    console.log("files", files);
     if (files && files[0]) this.setState({ file: files[0] });
   };
  
@@ -51,14 +57,57 @@ class ExcelReader extends Component {
   render() {
     return (
       <div>
-        <label htmlFor="file">Upload an excel to Process Triggers</label>
-        <br />
+        <Row>
+          <Col span={2}>
+              Светофоры
+              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+              <br />
+              <br />
+              Обрывные места
+              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+          </Col>
+          {/* <Col span={2}>
+              Обрывные места
+          </Col>
+          <Col span={2}>
+              Места пересечения с ЛЭП
+          </Col>
+          <Col span={2}>
+              Опробование тормозов
+          </Col>
+          <Col span={2}>
+              Устройства контроля схода подвижного состава (УКСПС)
+          </Col>
+          <Col span={2}>
+              Комплексы технических средств мониторинга (КТСМ)
+          </Col>
+          <Col span={2}>
+              Оси станций
+          </Col>
+          <Col span={2}>
+              Граничные стрелки станций
+          </Col>
+          <Col span={2}>
+              Переезды
+          </Col>
+          <Col span={2}>
+              Мосты
+          </Col>
+          <Col span={2}>
+              Профиль пути
+          </Col>
+          <Col span={2}>
+              Ведомость допустимых скоростей
+          </Col> */}
+        </Row>
+        {/* <label htmlFor="file">Upload an excel to Process Triggers</label>
+        <br /> */}
         <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
         <br />
         <input type='submit' 
           value="Process Triggers"
           onClick={this.handleFile} />
-          </div>
+        </div>
       
     )
   }

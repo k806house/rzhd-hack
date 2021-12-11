@@ -4,7 +4,6 @@ import './App.css';
 import { Button, Card } from 'antd';
 import 'antd/dist/antd.css';
 import { Upload } from 'antd';
-import { Row, Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import ExcelReader from './ExcelReader';
@@ -17,18 +16,6 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
-
-const handlePreview = async file => {
-  if (!file.url && !file.preview) {
-    file.preview = await getBase64(file.originFileObj);
-  }
-
-  this.setState({
-    previewImage: file.url || file.preview,
-    previewVisible: true,
-    previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
-  });
-};
 
 const uploadButton = (
   <div>
@@ -112,144 +99,9 @@ function App() {
         </div>
       </div>
       <Card id="container">
-        <Row>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-                // beforeUpload={beforeUpload}
-                // onChange={this.handleChange}
-              >
-                {uploadButton}
-              </Upload>
-              Светофоры
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Обрывные места
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Места пересечения с ЛЭП
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Опробование тормозов
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Устройства контроля схода подвижного состава (УКСПС)
-          </Col>
-          <Col span={2}>
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Комплексы технических средств мониторинга (КТСМ)
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Оси станций
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Граничные стрелки станций
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Переезды
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Мосты
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Профиль пути
-          </Col>
-          <Col span={2}>
-            
-             <Upload
-                listType="picture-card"
-                showUploadList={true}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-              Ведомость допустимых скоростей
-          </Col>
-        </Row>
-        
+        <ExcelReader/>
       </Card>
-      <ExcelReader/>
+      
       <div id="cartographer">
 
       </div>
