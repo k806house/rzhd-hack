@@ -5,6 +5,7 @@ import { Button, Card } from 'antd';
 import 'antd/dist/antd.css';
 
 import UploadFiles from './components/UploadFile';
+import Popup from './components/Popup';
 import ExcelReader from './ExcelReader';
 // import {html2canvas, jsPDF} from 'app/ext';
 import { jsPDF } from "jspdf";
@@ -38,6 +39,12 @@ function App() {
   const [precipitous, setPrecipitous] = useState([]);
   const [ktsm, setKtsm] = useState([]);
   const [lap, setLap] = useState([]);
+  const [popup1, setTogglePopup] = useState(false);
+
+  function handlePopup() {
+    let toggle = !popup1
+    setTogglePopup(toggle)
+  }
 
   var mock1 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var mock2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
@@ -216,6 +223,9 @@ function App() {
         <div class="menu-search">
         </div>
       </div>
+      <div className={popup1 ? '' : 'none'}>
+        <Popup togglePopup={handlePopup}/>
+      </div>
       <Card id="container">
         <UploadFiles uploadTrafic={uploadTraficLight} uploadPrecipitous={uploadPrecipitous} uploadKtsm={uploadKtsm} uploadLap={uploadLap}/>
         <ExcelReader/>
@@ -225,6 +235,8 @@ function App() {
       <Button onClick={createTable}> Draw </Button>
 
       <Button onClick={printDocument}> Save </Button>
+
+      <Button onClick={handlePopup}> Send email </Button>
     </div>
   );
 }

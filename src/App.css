@@ -140,3 +140,69 @@ img {
   background-color: #cbcbcb;
   box-shadow: 1px 2px 6px 0px #626262;
 }
+
+.popup {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  background-color: #fff;
+  z-index: 2;
+  transform: translate(50%, 10%);
+  box-shadow: -2px 7px 20px 4px #28282838;
+  border-radius: 3px;
+}
+
+.popup .header {
+  padding: 25px;
+  background-color: #ebebeb;
+}
+
+.popup .header h1 {
+  margin: 0;
+}
+
+.popup .header span{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 20px;
+  background: #e21a1a;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  line-height: 1.2;
+  color: white;
+  cursor: pointer;
+}
+
+.popup .body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  transform: translate(0, 140px);
+  gap: 15px;
+}
+
+.popup .body input{
+  padding: 10px 25px;
+  width: 75%;
+  border: 1px solid #ccc;
+  font-size: 18px;
+}
+
+.popup .body button{
+  cursor: pointer;
+  transition: all .3s ease-out;
+  border: none;
+  background-color: #e21a1a;
+  color: white;
+  padding: 0 25px;
+}
+.popup .body button:hover{
+  transition: all .2s ease-in;
+  background: #e34242;
+}
+
+.none {
+  display: none;
+}
