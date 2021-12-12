@@ -3,7 +3,7 @@ import XLSX from 'xlsx';
 import { Row, Col } from 'antd';
 import { SheetJSFT } from '../types';
 
-const UploadFile = ({ uploadTrafic, uploadPrecipitous }) => {
+const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm }) => {
 
   async function handlerFileTrafic(event) {
     const file = event.target.files[0];
@@ -16,9 +16,16 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous }) => {
     NormalizeData(file, 'precipitous');
   }
 
+  async function handlerFileKtsm(event) {
+    const file = event.target.files[0];
+    
+    NormalizeData(file, 'ktsm');
+  }
+
   function NormalizeData(data, type) {
     const traficLights = [];
     const precipitous = [];
+    const ktsm = [];
 
     const reader = new FileReader();
     reader.onload = (evt) => {
@@ -50,6 +57,14 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous }) => {
             }
           });
 
+        } else if(type == 'ktsm') {
+
+          data.forEach(el => {
+            if(el[2]) {
+              ktsm.push({"value": el[2]});
+            }
+          });
+
         }
     };
     reader.readAsBinaryString(data);
@@ -58,6 +73,8 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous }) => {
       uploadTrafic(traficLights);
     } else if (type == 'precipitous') {
       uploadPrecipitous(precipitous)
+    } else if (type == 'ktsm') {
+      uploadKtsm(ktsm)
     }
   };
 
@@ -82,6 +99,14 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous }) => {
             id="file"
             accept={SheetJSFT}
             onChange={handlerFilePrecipitous}
+          />
+          <span>Комплексы технических средств мониторинга</span>
+          <input
+            type="file"
+            className="form-control"
+            id="file"
+            accept={SheetJSFT}
+            onChange={handlerFileKtsm}
           />
         </Col>
       </Row>

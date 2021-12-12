@@ -36,19 +36,25 @@ function App() {
   // Create State
   const [traffic_lights, setTraficLight] = useState([]);
   const [precipitous, setPrecipitous] = useState([]);
+  const [ktsm, setKtsm] = useState([]);
 
   var mock1 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var mock2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var indexs = ["0", "1", "3", "4"];
 
+  const maxKm = 400;
+
   let arrKilomet = []
-  for(let i = 400; i > 0; i--) { arrKilomet.push(i.toString()) }
+  for(let i = maxKm; i > 0; i--) { arrKilomet.push(i.toString()) }
+  
+  const icons = [];
+  for(let i = maxKm; i > 0; i--) { icons.push([]) }
 
   // var icons = [["0", "1"], ["1"], ["3", ], [], ["4", "1"], [], ["0"], [], ["3"], [], ["4", "1"], ["1"], [], [], [], []];
-  const icons = [];
 
   const uploadTraficLight = traficLight => setTraficLight(traficLight);
   const uploadPrecipitous = precipitous => setPrecipitous(precipitous);
+  const uploadKtsm = ktsm => setKtsm(ktsm);
 
   function createTable(tableNumbers) {
     const preprocess_traffic_lights = [];
@@ -78,7 +84,6 @@ function App() {
             light = curr_light;
           }
         }
-        console.log('LIGHT', light);
         item["traffic_light"] = light;
         final_table.push(item);
       }
@@ -93,15 +98,32 @@ function App() {
             let km = precipitous[j].value.split('+')[0]
             if(km == final_table[i]['km']) {
               prec = true
-              // final_table[i]['precipitous'] = true
             }
 
           }
         }
-        if(prec) icons.push(["3"])
-        else icons.push([])
+        if(prec) icons[i].push("3")
       }
     }
+
+    if(ktsm.length > 0) {
+      for (var i = 0; i < final_table.length; i++) {
+        let ktsmBool = false;
+        for(let j = 0; j < ktsm.length; j++) {
+          if(ktsm[j].value.indexOf('+') !== -1) {
+
+            let km = ktsm[j].value.split('+')[0]
+            if(km == final_table[i]['km']) {
+              ktsmBool = true
+            }
+
+          }
+        }
+        if(ktsmBool) icons[i].push("0")
+      }
+    }
+
+    console.log('final_table', final_table)
 
     var table = document.createElement('table');
     var tableBody = document.createElement('tbody');
@@ -176,7 +198,7 @@ function App() {
         </div>
       </div>
       <Card id="container">
-        <UploadFiles uploadTrafic={uploadTraficLight} uploadPrecipitous={uploadPrecipitous}/>
+        <UploadFiles uploadTrafic={uploadTraficLight} uploadPrecipitous={uploadPrecipitous} uploadKtsm={uploadKtsm}/>
         <ExcelReader/>
       </Card>
       <Card id="nomogramma">
