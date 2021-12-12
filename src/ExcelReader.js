@@ -70,41 +70,42 @@ import { file } from '@babel/types';
 
 function ExcelReader() {
   const [data, setData] = React.useState([]);
+  // const [traffic_lights, setTraficLight] = React.useState([{"name": "H1", "value": "234+600"}, {"name": "H", "value": "123+756"}]);
 
   // UploadFile
-  async function UploadFile(event) {
-    const file = event.target.files[0];
+  // async function UploadFile(event) {
+  //   const file = event.target.files[0];
     
-    NormalizeData(file);
-  }
+  //   NormalizeData(file);
+  // }
 
-  function NormalizeData(data) {
-    const traficLights = [];
+  // function NormalizeData(data) {
+  //   const traficLights = [];
 
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-        /* Parse data */
-        const bstr = evt.target.result;
-        const wb = XLSX.read(bstr, {type:'binary'});
+  //   const reader = new FileReader();
+  //   reader.onload = (evt) => {
+  //       /* Parse data */
+  //       const bstr = evt.target.result;
+  //       const wb = XLSX.read(bstr, {type:'binary'});
 
-        /* Get first worksheet */
-        const wsname = wb.SheetNames[0];
-        const ws = wb.Sheets[wsname];
+  //       /* Get first worksheet */
+  //       const wsname = wb.SheetNames[0];
+  //       const ws = wb.Sheets[wsname];
 
-        /* Convert array of arrays */
-        const data = XLSX.utils.sheet_to_json(ws, {header:1});
-        /* Update state */
+  //       /* Convert array of arrays */
+  //       const data = XLSX.utils.sheet_to_json(ws, {header:1});
+  //       /* Update state */
 
-        data.forEach(el => {
-          if(el[1] && el[2]) {
-            traficLights.push({"name": el[1].toString(), "value": el[2]})
-          }
-        });
-    };
-    reader.readAsBinaryString(data);
+  //       data.forEach(el => {
+  //         if(el[1] && el[2]) {
+  //           traficLights.push({"name": el[1].toString(), "value": el[2]})
+  //         }
+  //       });
+  //   };
+  //   reader.readAsBinaryString(data);
 
-    setData(traficLights);
-  }
+  //   setTraficLight(traficLights);
+  // }
 
   const [cols, setCols] = React.useState([]);
 
@@ -150,14 +151,14 @@ function ExcelReader() {
   return (
       <div>
         <Row>
-          <Col span={2}>
+          {/* <Col span={2}>
               Светофоры
               <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={UploadFile} />
               <br />
               <br />
               Обрывные места
               <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={UploadFile} />
-          </Col>
+          </Col> */}
           {/* <Col span={2}>
               Обрывные места
           </Col>
