@@ -3,29 +3,32 @@ import XLSX from 'xlsx';
 import { Row, Col } from 'antd';
 import { SheetJSFT } from '../types';
 
-const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm }) => {
+const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm, uploadLap }) => {
 
   async function handlerFileTrafic(event) {
     const file = event.target.files[0];
-    
     NormalizeData(file, 'trafic');
   }
   async function handlerFilePrecipitous(event) {
     const file = event.target.files[0];
-    
     NormalizeData(file, 'precipitous');
   }
 
   async function handlerFileKtsm(event) {
     const file = event.target.files[0];
-    
     NormalizeData(file, 'ktsm');
+  }
+
+  async function handlerFileLap(event) {
+    const file = event.target.files[0];
+    NormalizeData(file, 'lap');
   }
 
   function NormalizeData(data, type) {
     const traficLights = [];
     const precipitous = [];
     const ktsm = [];
+    const lap = [];
 
     const reader = new FileReader();
     reader.onload = (evt) => {
@@ -65,6 +68,14 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm }) => {
             }
           });
 
+        } else if(type == 'lap') {
+
+          data.forEach(el => {
+            if(el[2]) {
+              lap.push({"value": el[2]});
+            }
+          });
+
         }
     };
     reader.readAsBinaryString(data);
@@ -75,6 +86,8 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm }) => {
       uploadPrecipitous(precipitous)
     } else if (type == 'ktsm') {
       uploadKtsm(ktsm)
+    } else if (type == 'lap') {
+      uploadLap(lap)
     }
   };
 
@@ -107,6 +120,14 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm }) => {
             id="file"
             accept={SheetJSFT}
             onChange={handlerFileKtsm}
+          />
+          <span>Места пересечения с ЛЭП</span>
+          <input
+            type="file"
+            className="form-control"
+            id="file"
+            accept={SheetJSFT}
+            onChange={handlerFileLap}
           />
         </Col>
       </Row>

@@ -37,12 +37,13 @@ function App() {
   const [traffic_lights, setTraficLight] = useState([]);
   const [precipitous, setPrecipitous] = useState([]);
   const [ktsm, setKtsm] = useState([]);
+  const [lap, setLap] = useState([]);
 
   var mock1 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var mock2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var indexs = ["0", "1", "3", "4"];
 
-  const maxKm = 400;
+  const maxKm = 375;
 
   let arrKilomet = []
   for(let i = maxKm; i > 0; i--) { arrKilomet.push(i.toString()) }
@@ -55,6 +56,7 @@ function App() {
   const uploadTraficLight = traficLight => setTraficLight(traficLight);
   const uploadPrecipitous = precipitous => setPrecipitous(precipitous);
   const uploadKtsm = ktsm => setKtsm(ktsm);
+  const uploadLap = lap => setLap(lap);
 
   function createTable(tableNumbers) {
     const preprocess_traffic_lights = [];
@@ -120,6 +122,23 @@ function App() {
           }
         }
         if(ktsmBool) icons[i].push("0")
+      }
+    }
+
+    if(lap.length > 0) {
+      for (var i = 0; i < final_table.length; i++) {
+        let lapBool = false;
+        for(let j = 0; j < lap.length; j++) {
+          if(lap[j].value.indexOf('+') !== -1) {
+
+            let km = lap[j].value.split('+')[0]
+            if(km == final_table[i]['km']) {
+              lapBool = true
+            }
+
+          }
+        }
+        if(lapBool) icons[i].push("4")
       }
     }
 
@@ -198,7 +217,7 @@ function App() {
         </div>
       </div>
       <Card id="container">
-        <UploadFiles uploadTrafic={uploadTraficLight} uploadPrecipitous={uploadPrecipitous} uploadKtsm={uploadKtsm}/>
+        <UploadFiles uploadTrafic={uploadTraficLight} uploadPrecipitous={uploadPrecipitous} uploadKtsm={uploadKtsm} uploadLap={uploadLap}/>
         <ExcelReader/>
       </Card>
       <Card id="nomogramma">
