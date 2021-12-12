@@ -50,12 +50,23 @@
 #container {
   margin: 100px;
 }
+#nomogramma {
+  margin: 100px;
+}
 
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
-  }
-  th span {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-  }
+}
+th span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+td {
+  width: 0.5cm;
+}
+
+img {
+  width: 0.4cm;
+}

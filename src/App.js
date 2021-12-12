@@ -3,33 +3,81 @@ import './App.css';
 
 import { Button, Card } from 'antd';
 import 'antd/dist/antd.css';
-import { Upload } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 
 import ExcelReader from './ExcelReader';
+// import {html2canvas, jsPDF} from 'app/ext';
+import { jsPDF } from "jspdf";
+import html2canvas from 'html2canvas';
 
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+
+function printDocument() {
+  const input = document.getElementById('nomogramma');
+  htmlToImage.toPng(input, { cacheBust: true, })
+    .then((dataUrl) => {
+      var img = new Image();
+      img.src = dataUrl;
+      // const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        // orientation: "landscape",
+        format: [1000, 1000]
+      });
+      pdf.addImage(img, 'PNG', 0, 0);
+      // pdf.output('dataurlnewwindow');
+      pdf.save("download.pdf");
+    })
+  ;
 }
-
-const uploadButton = (
-  <div>
-    <PlusOutlined />
-    <div style={{ marginTop: 8 }}>Upload</div>
-  </div>
-);
 
 function App() {
   var mock1 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var mock2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var indexs = ["0", "1", "3", "4"];
-  var numbers = ["234", "123", "234", "348", "234", "123", "234", "123", "234", "123", "234", "388", "234", "123", "234", "123"];
+
+
+  var kilometers = ["234", "123", "234", "348", "234", "123", "234", "123", "234", "123", "234", "388", "234", "123", "234", "123"];
   var icons = [["0", "1"], ["1"], ["3", ], [], ["4", "1"], [], ["0"], [], ["3"], [], ["4", "1"], ["1"], [], [], [], []];
+  var traffic_lights = [{"name": "H1", "value": "234+600"}, {"name": "H", "value": "123+756"}]
+
+
+  var final_table = [];
+
+  var preprocess_traffic_lights = [];
+  for (var i = 0; i < traffic_lights.length; i++) {
+    var light = traffic_lights[i];
+
+    var name = light["name"];
+    var km = light["value"].split("+")[0];
+    var picket = light["value"].split("+")[1][0];
+    var meters = light["value"].split("+")[1].slice(1, 3);
+    
+    preprocess_traffic_lights.push({
+      "name": name,
+      "km": km,
+      "picket": picket,
+      "meters": meters
+    });
+  }
+
+  for (var i = 0; i < kilometers.length; i++) {
+    var kilometer_number = kilometers[i];
+    
+    var item = {
+      "km": kilometer_number
+    }
+
+    var light = "";
+    for (var j = 0; j < preprocess_traffic_lights.length; j++) {
+      var curr_light = preprocess_traffic_lights[j];
+      if (curr_light["km"] === kilometer_number) {
+        light = curr_light;
+      }
+    }
+    item["traffic_light"] = light;
+    final_table.push(item);
+  }
+  console.log(final_table);
 
   // createTable(numbers);
 
@@ -49,22 +97,27 @@ function App() {
       tableBody.appendChild(row);
 
       var row = document.createElement('tr');
-      mock2.forEach(function(cellData) {
+      final_table.forEach(function(cellData) {
           var cell_special = document.createElement('th');
           var cell = document.createElement('span');
 
-          cell.appendChild(document.createTextNode(cellData));
+          if (cellData["traffic_light"] === "") {
+            cell.appendChild(document.createTextNode(cellData["traffic_light"]));
+          } else {
+            cell.appendChild(document.createTextNode(cellData["traffic_light"]["picket"] + "+" + cellData["traffic_light"]["meters"]));
+          }
+          
           cell_special.appendChild(cell);
           row.appendChild(cell_special);
       });
       tableBody.appendChild(row);
 
       var row = document.createElement('tr');
-      numbers.forEach(function(cellData) {
+      final_table.forEach(function(cellData) {
           var cell_special = document.createElement('th');
           var cell = document.createElement('span');
 
-          cell.appendChild(document.createTextNode(cellData));
+          cell.appendChild(document.createTextNode(cellData["km"]));
           cell_special.appendChild(cell);
           row.appendChild(cell_special);
       });
@@ -87,8 +140,12 @@ function App() {
       tableBody.appendChild(row);
 
       table.appendChild(tableBody);
-      document.body.appendChild(table);
+
+      document.getElementById('nomogramma').appendChild(table);  
+      // document.body.appendChild(table);   
   }
+
+  
   return (
     <div className="App">
       <div class="logo-menu_wrap">
@@ -101,11 +158,11 @@ function App() {
       <Card id="container">
         <ExcelReader/>
       </Card>
-      
-      <div id="cartographer">
-
-      </div>
+      <Card id="nomogramma">
+      </Card>
       <Button onClick={createTable}> Draw </Button>
+
+      <Button onClick={printDocument}> Save </Button>
     </div>
   );
 }
