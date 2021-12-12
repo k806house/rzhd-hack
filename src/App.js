@@ -35,24 +35,24 @@ function printDocument() {
 function App() {
   // Create State
   const [traffic_lights, setTraficLight] = useState([]);
+  const [precipitous, setPrecipitous] = useState([]);
 
   var mock1 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var mock2 = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
   var indexs = ["0", "1", "3", "4"];
 
+  let arrKilomet = []
+  for(let i = 400; i > 0; i--) { arrKilomet.push(i.toString()) }
 
-  let kilometers = [];
-  for(let i = 400; i > 0; i--) { kilometers.push(i.toString()) }
-
-  var icons = [["0", "1"], ["1"], ["3", ], [], ["4", "1"], [], ["0"], [], ["3"], [], ["4", "1"], ["1"], [], [], [], []];
-  // var traffic_lights = [{"name": "H1", "value": "234+600"}, {"name": "H", "value": "123+756"}]
+  // var icons = [["0", "1"], ["1"], ["3", ], [], ["4", "1"], [], ["0"], [], ["3"], [], ["4", "1"], ["1"], [], [], [], []];
+  const icons = [];
 
   const uploadTraficLight = traficLight => setTraficLight(traficLight);
-
-  var final_table = [];
-  var preprocess_traffic_lights = [];
+  const uploadPrecipitous = precipitous => setPrecipitous(precipitous);
 
   function createTable(tableNumbers) {
+    const preprocess_traffic_lights = [];
+
     traffic_lights.forEach(el => {
       preprocess_traffic_lights.push({
         "name": el.name,
@@ -60,27 +60,48 @@ function App() {
         "picket": el.value.split('+')[1][0],
         "meters": el.value.split('+')[1].slice(1,3)
       })
-    })
+    });
 
-    for (var i = 0; i < kilometers.length; i++) {
-      var kilometer_number = kilometers[i];
-      
-      var item = {
-        "km": kilometer_number
-      }
-  
-      var light = "";
-      for (var j = 0; j < preprocess_traffic_lights.length; j++) {
-        var curr_light = preprocess_traffic_lights[j];
-        if (curr_light["km"] === kilometer_number) {
-          light = curr_light;
+    let final_table = [];
+
+    
+    if(preprocess_traffic_lights.length > 0) {
+      for (var i = 0; i < arrKilomet.length; i++) {
+        var kilometer_number = arrKilomet[i];
+        var item = {
+          "km": kilometer_number
         }
+        var light = "";
+        for (var j = 0; j < preprocess_traffic_lights.length; j++) {
+          var curr_light = preprocess_traffic_lights[j];
+          if (curr_light["km"] == kilometer_number) {
+            light = curr_light;
+          }
+        }
+        console.log('LIGHT', light);
+        item["traffic_light"] = light;
+        final_table.push(item);
       }
-      item["traffic_light"] = light;
-      final_table.push(item);
     }
 
+    if(precipitous.length > 0) {
+      for (var i = 0; i < final_table.length; i++) {
+        let prec = false;
+        for(let j = 0; j < precipitous.length; j++) {
+          if(precipitous[j].value.indexOf('+') !== -1) {
 
+            let km = precipitous[j].value.split('+')[0]
+            if(km == final_table[i]['km']) {
+              prec = true
+              // final_table[i]['precipitous'] = true
+            }
+
+          }
+        }
+        if(prec) icons.push(["3"])
+        else icons.push([])
+      }
+    }
 
     var table = document.createElement('table');
     var tableBody = document.createElement('tbody');
@@ -145,7 +166,6 @@ function App() {
       // document.body.appendChild(table);   
   }
 
-  
   return (
     <div className="App">
       <div class="logo-menu_wrap">
@@ -156,7 +176,7 @@ function App() {
         </div>
       </div>
       <Card id="container">
-        <UploadFiles upload={uploadTraficLight}/>
+        <UploadFiles uploadTrafic={uploadTraficLight} uploadPrecipitous={uploadPrecipitous}/>
         <ExcelReader/>
       </Card>
       <Card id="nomogramma">
