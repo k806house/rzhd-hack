@@ -4,24 +4,32 @@ import { Row, Col } from 'antd';
 import { SheetJSFT } from '../types';
 
 const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm, uploadLap }) => {
+  let [classTrafic, setClassTrafic] = useState(false)
+  let [classPrec, setClassPrec] = useState(false)
+  let [classKtsm, setClassKtsm] = useState(false)
+  let [classLap, setClassLap] = useState(false)
 
   async function handlerFileTrafic(event) {
     const file = event.target.files[0];
     NormalizeData(file, 'trafic');
+    if (file) setClassTrafic(event.target.files[0].name);
   }
   async function handlerFilePrecipitous(event) {
     const file = event.target.files[0];
     NormalizeData(file, 'precipitous');
+    if (file) setClassPrec(event.target.files[0].name);
   }
 
   async function handlerFileKtsm(event) {
     const file = event.target.files[0];
     NormalizeData(file, 'ktsm');
+    if (file) setClassKtsm(event.target.files[0].name);
   }
 
   async function handlerFileLap(event) {
     const file = event.target.files[0];
     NormalizeData(file, 'lap');
+    if (file) setClassLap(event.target.files[0].name);
   }
 
   function NormalizeData(data, type) {
@@ -92,45 +100,31 @@ const UploadFile = ({ uploadTrafic, uploadPrecipitous, uploadKtsm, uploadLap }) 
   };
 
   return (
-    <div>
-      <Row>
-        <Col span={2}>
-          <span>Светофоры</span>
-          <input
-            type="file"
-            className="form-control"
-            id="file"
-            accept={SheetJSFT}
-            onChange={handlerFileTrafic}
-          />
-          <br />
-          <br />
-          <span>Обрывные места</span>
-          <input
-            type="file"
-            className="form-control"
-            id="file"
-            accept={SheetJSFT}
-            onChange={handlerFilePrecipitous}
-          />
-          <span>Комплексы технических средств мониторинга</span>
-          <input
-            type="file"
-            className="form-control"
-            id="file"
-            accept={SheetJSFT}
-            onChange={handlerFileKtsm}
-          />
-          <span>Места пересечения с ЛЭП</span>
-          <input
-            type="file"
-            className="form-control"
-            id="file"
-            accept={SheetJSFT}
-            onChange={handlerFileLap}
-          />
-        </Col>
-      </Row>
+    <div className='uploadFile'>
+      <div>
+        <label for="custom-file-upload1" className={classTrafic ? 'active filupp' : 'filupp'}>
+          <span class="filupp-file-name js-value">{classTrafic ? classTrafic : 'Светофоры' }</span>
+          <input type="file" name="attachment-file" onChange={handlerFileTrafic} accept={SheetJSFT} id="custom-file-upload1"/>
+        </label>
+      </div>
+      <div>
+        <label for="custom-file-upload2" className={classPrec ? 'active filupp' : 'filupp'}>
+          <span class="filupp-file-name js-value">{classPrec ? classPrec : 'Обрывные места' }</span>
+          <input type="file" name="attachment-file" onChange={handlerFilePrecipitous} accept={SheetJSFT} id="custom-file-upload2"/>
+        </label>
+      </div>
+      <div>
+        <label for="custom-file-upload3" className={classKtsm ? 'active filupp' : 'filupp'}>
+          <span class="filupp-file-name js-value">{classKtsm ? classKtsm : 'КТСМ' }</span>
+          <input type="file" name="attachment-file" onChange={handlerFileKtsm} accept={SheetJSFT} id="custom-file-upload3"/>
+        </label>
+      </div>
+      <div>
+        <label for="custom-file-upload4" className={classLap ? 'active filupp' : 'filupp'}>
+          <span class="filupp-file-name js-value">{classLap ? classLap : 'ЛЭП' }</span>
+          <input type="file" name="attachment-file" onChange={handlerFileLap} accept={SheetJSFT} id="custom-file-upload4"/>
+        </label>
+      </div>
     </div>
   )
 }

@@ -195,12 +195,12 @@ function ExcelReader() {
         </Row>
         {/* <label htmlFor="file">Upload an excel to Process Triggers</label>
         <br /> */}
-        <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={handleFile} />
+        {/* <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={handleFile} />
         <br />
         <input type='submit' 
           disabled={isSubmitVisible}
           value="Process Triggers"
-          onClick={handleFile} />
+          onClick={handleFile} /> */}
         </div>
       
     )
