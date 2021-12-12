@@ -52,6 +52,7 @@
 }
 #nomogramma {
   margin: 100px;
+  overflow-x: auto;
 }
 
 table, th, td {
