@@ -70,6 +70,43 @@ import { file } from '@babel/types';
 
 function ExcelReader() {
   const [data, setData] = React.useState([]);
+  // const [traffic_lights, setTraficLight] = React.useState([{"name": "H1", "value": "234+600"}, {"name": "H", "value": "123+756"}]);
+
+  // UploadFile
+  // async function UploadFile(event) {
+  //   const file = event.target.files[0];
+    
+  //   NormalizeData(file);
+  // }
+
+  // function NormalizeData(data) {
+  //   const traficLights = [];
+
+  //   const reader = new FileReader();
+  //   reader.onload = (evt) => {
+  //       /* Parse data */
+  //       const bstr = evt.target.result;
+  //       const wb = XLSX.read(bstr, {type:'binary'});
+
+  //       /* Get first worksheet */
+  //       const wsname = wb.SheetNames[0];
+  //       const ws = wb.Sheets[wsname];
+
+  //       /* Convert array of arrays */
+  //       const data = XLSX.utils.sheet_to_json(ws, {header:1});
+  //       /* Update state */
+
+  //       data.forEach(el => {
+  //         if(el[1] && el[2]) {
+  //           traficLights.push({"name": el[1].toString(), "value": el[2]})
+  //         }
+  //       });
+  //   };
+  //   reader.readAsBinaryString(data);
+
+  //   setTraficLight(traficLights);
+  // }
+
   const [cols, setCols] = React.useState([]);
 
   const [fileCounter, setFileCounter] = React.useState(1);
@@ -94,13 +131,13 @@ function ExcelReader() {
     console.log("kek");
   }
 
-  const addfile = () => {
-    setFileCounter(fileCounter + 1);
-    if (fileCounter == 2) {
-      isSubmitVisibleSet(false);
-    }
-    console.log(fileCounter);
-  };
+  // const addfile = () => {
+  //   setFileCounter(fileCounter + 1);
+  //   if (fileCounter == 2) {
+  //     isSubmitVisibleSet(false);
+  //   }
+  //   console.log(fileCounter);
+  // };
 
   const exportFile = () => {
     /* convert state to workbook */
@@ -114,14 +151,14 @@ function ExcelReader() {
   return (
       <div>
         <Row>
-          <Col span={2}>
+          {/* <Col span={2}>
               Светофоры
-              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={addfile} />
+              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={UploadFile} />
               <br />
               <br />
               Обрывные места
-              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={addfile} />
-          </Col>
+              <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={UploadFile} />
+          </Col> */}
           {/* <Col span={2}>
               Обрывные места
           </Col>
@@ -158,12 +195,12 @@ function ExcelReader() {
         </Row>
         {/* <label htmlFor="file">Upload an excel to Process Triggers</label>
         <br /> */}
-        <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={handleFile} />
+        {/* <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={handleFile} />
         <br />
         <input type='submit' 
           disabled={isSubmitVisible}
           value="Process Triggers"
-          onClick={handleFile} />
+          onClick={handleFile} /> */}
         </div>
       
     )
